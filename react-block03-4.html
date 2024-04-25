@@ -1,0 +1,173 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo App (2)</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" defer crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" defer crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.10.3/babel.min.js" defer crossorigin></script>
+  <style>
+
+    * {
+     padding: 0;
+     margin: 0;
+     box-sizing: border-box;
+    }
+    #root {
+     max-width: 106.25rem;
+     width: 100%;
+     min-height: 100vh;
+     background-color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+    }
+    #root_wrapper {
+     max-width: 43.75rem;
+     width: 100%;
+     border: 5px solid rgb(208, 208, 99);
+     padding: 0.625rem;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     background-color: lightgoldenrodyellow;
+    }
+    .todo-list {
+      width: 28.75rem;
+      margin: 0 auto;
+    }
+    .todo-list input {
+      width: 100%;
+      padding: 0.625rem;
+      margin-bottom: 0.625rem;
+      font-size: 1.125rem;
+    }
+    .todo-list input:focus{
+    outline: none;
+    }
+    .todo-list button {
+      padding: 0.625rem 2.5rem;
+      margin-bottom: 0.625rem;
+      display: block;
+      background-color: lightgreen;
+      margin: 0rem auto 0.625rem;
+      cursor: pointer;
+      border: none;
+      color: black;
+    }
+    .todo-list ul {
+      list-style-type: none;
+      padding: 0;
+      padding: 0.625rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3125rem;
+    }
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      margin-bottom: 0.3125rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      height: 2.19rem;
+      cursor: pointer;
+      font-size: 1.375rem;
+    }
+    .todo-item.done {
+      text-decoration: line-through;
+      height: 2.2rem;
+      cursor: initial;
+    }
+    .delete-icon {
+      display: none;
+      cursor: pointer;
+    }
+    .todo-item:hover .delete-icon {
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+    }
+    img.image{
+        border: 1px solid transparent;
+    }
+    img.image:hover {
+        border: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <div id="root_wrapper"> </div>
+  </div>
+  <script type="text/babel" data-presets="react,stage-3">
+
+function Todo () {
+        const [todos, setTodos] = React.useState([]);
+        const [input, setInput] = React.useState('');
+
+        const addTodo = () => {
+          if (input.trim()) {
+            setTodos([...todos, { text: input, done: false }]);
+            setInput('');
+          }
+        };
+
+        const handleKeyPress = (e) => {
+          if (e.key === 'Enter') {
+            addTodo();
+          }
+        };
+
+        const removeTodo = (index) => {
+          setTodos(todos.filter((_, i) => i !== index));
+        };
+
+        const toggleDone = (index) => {
+          setTodos(todos.map((todo, i) => i === index ? { ...todo, done: !todo.done } : todo));
+        };
+
+        return (
+          <div className="todo-list">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Write ToDo..."
+            />
+            <button className='btn' onClick={addTodo}>Add ToDo</button>
+            <ul className='ul-todo'>
+              {todos.map((todo, index) => (
+                <li
+                 key={index}
+                 className={`todo-item ${todo.done ? 'done' : ''}`}
+                 onClick={() => toggleDone(index)}
+                >
+                <h1 style={{color: "red"}}>Hello Style!</h1>
+                 {todo.text}
+                 <span className="delete-icon" onClick={(e) => { e.stopPropagation(); removeTodo(index); }}>
+                    <img className='image' width="30" height="30" src="https://img.icons8.com/emoji/48/wastebasket-emoji.png" alt="wastebasket-emoji"/>
+                 </span>
+                </li>
+              
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+    const root = ReactDOM.createRoot(document.getElementById("root_wrapper"))
+    root.render(<Todo />);
+   
+  </script>
+</body>
+</html>
